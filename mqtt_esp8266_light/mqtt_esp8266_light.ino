@@ -83,11 +83,12 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 void setup() {
-  if (rgb) {
+//  if (rgb) 
+//  {
     pinMode(CONFIG_PIN_RED, OUTPUT);
     pinMode(CONFIG_PIN_GREEN, OUTPUT);
     pinMode(CONFIG_PIN_BLUE, OUTPUT);
-  }
+//  }
   if (includeWhite) {
     pinMode(CONFIG_PIN_WHITE, OUTPUT);
   }
@@ -381,7 +382,11 @@ void setColor(int inR, int inG, int inB, int inW) {
   }
 
   if (includeWhite) {
-    analogWrite(CONFIG_PIN_WHITE, inW);
+    int corrected = int(255.0 / (1.0 + exp(((double(inW)/26.0)-6.0) * -1.0)));
+    analogWrite(0, corrected);
+    analogWrite(1, corrected);
+    analogWrite(2, corrected);
+    analogWrite(3, corrected);
   }
 
   if (CONFIG_DEBUG) {
